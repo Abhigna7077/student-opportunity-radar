@@ -11,10 +11,10 @@ It collects opportunities such as **hackathons, internships, competitions, schol
 ## 🔗 Live Demo
 
 **Live Website:**  
-https://student-opportunity-radar.vercel.app
+[Open Student Opportunity Radar](https://student-opportunity-radar.vercel.app)
 
 **GitHub Repository:**  
-https://github.com/Abhigna7077/student-opportunity-radar
+[View Source Code](https://github.com/Abhigna7077/student-opportunity-radar)
 
 ---
 
@@ -60,3 +60,32 @@ https://github.com/Abhigna7077/student-opportunity-radar
                │
                ▼
        Student Opportunity Radar
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
+- React 19
+- Vite
+- Tailwind CSS
+
+### Backend
+- Node.js
+- Express.js
+- CORS
+- Dotenv
+
+### Scraping & Data Processing
+- Bright Data
+- JavaScript
+- JSON
+- Deadline parsing and normalization
+
+### Matching
+- JavaScript-based profile and skill matching
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+- Source Control: GitHub
