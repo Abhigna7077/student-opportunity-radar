@@ -217,6 +217,11 @@ export default function App() {
     }));
   };
 
+  // Update entire student profile (triggers backend re-match)
+  const handleUpdateProfile = (updatedProfile) => {
+    setStudentProfile(updatedProfile);
+  };
+
   // Collect unique skills dynamically from API opportunities
   const availableSkills = useMemo(() => {
     const skillsSet = new Set();
@@ -448,6 +453,7 @@ export default function App() {
                 <Profile
                   profile={studentProfile}
                   onUpdatePreferredMode={handleUpdatePreferredMode}
+                  onUpdateProfile={handleUpdateProfile}
                 />
               )}
             </>

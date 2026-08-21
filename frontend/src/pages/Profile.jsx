@@ -12,7 +12,8 @@ import ProfileCard from '../components/ProfileCard';
 
 export default function Profile({
   profile,
-  onUpdatePreferredMode
+  onUpdatePreferredMode,
+  onUpdateProfile
 }) {
   const targetTypes = profile.targetTypes || ["Hackathon", "Internship", "Fellowship", "Competition", "Scholarship"];
   const preferredModes = profile.preferredModes || ["Online", "Offline"];
@@ -42,7 +43,10 @@ export default function Profile({
       </div>
 
       {/* Main Profile Card Component */}
-      <ProfileCard profile={profile} />
+      <ProfileCard 
+        profile={profile} 
+        onUpdateProfile={onUpdateProfile} 
+      />
 
       {/* Preferences & Matching Criteria Preview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
