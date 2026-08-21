@@ -1,0 +1,26 @@
+{
+  "name": "student-opportunity-radar",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Student Opportunity Radar - Discover hackathons, internships, competitions, scholarships, and fellowships.",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend start",
+    "build:frontend": "npm --prefix frontend run build",
+    "normalize:data": "node scraper/normalizeOpportunities.js",
+    "parse:deadlines": "node scraper/parseDeadline.js"
+  },
+  "keywords": [
+    "opportunity",
+    "radar",
+    "hackathons",
+    "internships",
+    "scholarships",
+    "scraper",
+    "unstop",
+    "bright-data"
+  ],
+  "author": "",
+  "license": "ISC"
+}
