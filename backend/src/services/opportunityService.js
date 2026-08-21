@@ -1,12 +1,54 @@
 import fs from 'fs/promises';
+import fsSync from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Path to data/opportunities.json (two levels up from src/services -> backend -> root/data)
-const DATA_FILE_PATH = path.resolve(__dirname, '../../../data/opportunities.json');
+/**
+ * Robust, production-safe candidate paths to locate opportunities.json
+ * regardless of whether running locally, in Docker, or on cloud platforms (Render, Vercel, Railway).
+ */
+const CANDIDATE_PATHS = [
+  // 1. Root data directory relative to this service file (Local / Full Repo Clone)
+  path.resolve(__dirname, '../../../data/opportunities.json'),
+  // 2. Bundled backend data directory (Cloud deployment where Root Directory is 'backend')
+  path.resolve(__dirname, '../../data/opportunities.json'),
+  // 3. Current Working Directory / data
+  path.resolve(process.cwd(), 'data/opportunities.json'),
+  // 4. Current Working Directory / backend / data
+  path.resolve(process.cwd(), 'backend/data/opportunities.json'),
+  // 5. Parent of CWD / data (if CWD is backend/src)
+  path.resolve(process.cwd(), '../data/opportunities.json')
+];
+
+let resolvedDataFilePath = null;
+
+/**
+ * Dynamically resolves and caches the accessible opportunities.json file path.
+ * @returns {string} The resolved absolute file path
+ */
+export function getDataFilePath() {
+  if (resolvedDataFilePath && fsSync.existsSync(resolvedDataFilePath)) {
+    return resolvedDataFilePath;
+  }
+
+  for (const candidate of CANDIDATE_PATHS) {
+    try {
+      if (fsSync.existsSync(candidate)) {
+        resolvedDataFilePath = candidate;
+        return candidate;
+      }
+    } catch {
+      // Continue searching candidates
+    }
+  }
+
+  // Default fallback
+  resolvedDataFilePath = CANDIDATE_PATHS[0];
+  return resolvedDataFilePath;
+}
 
 const SEARCH_SYNONYMS = {
   'python': ['python', 'software development', 'machine learning', 'data science', 'ai engineering', 'backend'],
@@ -33,8 +75,9 @@ const SEARCH_SYNONYMS = {
  * Handles missing file and malformed JSON errors gracefully.
  */
 export async function readOpportunitiesData() {
+  const filePath = getDataFilePath();
   try {
-    const rawData = await fs.readFile(DATA_FILE_PATH, 'utf-8');
+    const rawData = await fs.readFile(filePath, 'utf-8');
     
     if (!rawData.trim()) {
       return [];
@@ -47,6 +90,7 @@ export async function readOpportunitiesData() {
     return parsed;
   } catch (error) {
     if (error.code === 'ENOENT') {
+      console.warn(`[Opportunity Service Warning] Data file not found at ${filePath}. Returning empty dataset.`);
       return [];
     }
     if (error instanceof SyntaxError) {

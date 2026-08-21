@@ -5,11 +5,25 @@ import * as matchingService from '../services/matchingService.js';
  * Health check handler
  * GET /api/health
  */
-export function getHealth(req, res) {
-  res.status(200).json({
-    status: 'ok',
-    message: 'Student Opportunity Radar API is running'
-  });
+export async function getHealth(req, res) {
+  try {
+    const filePath = opportunityService.getDataFilePath();
+    const opps = await opportunityService.readOpportunitiesData();
+    const withDeadlines = opps.filter((o) => Boolean(o.deadlineISO)).length;
+
+    res.status(200).json({
+      status: 'ok',
+      message: 'Student Opportunity Radar API is running',
+      dataPath: filePath,
+      totalOpportunities: opps.length,
+      withDeadlines
+    });
+  } catch {
+    res.status(200).json({
+      status: 'ok',
+      message: 'Student Opportunity Radar API is running'
+    });
+  }
 }
 
 /**
