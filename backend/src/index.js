@@ -56,8 +56,8 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Student Opportunity Radar API running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Student Opportunity Radar API running on port ${PORT}`);
 });
 
 export default app;
